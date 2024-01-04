@@ -1,0 +1,23 @@
+.biege {
+    background-color: #e6daa6;
+}
+
+.brown {
+    background-color: #964b00;
+}
+
+.cyan {
+    background-color: #42aaff;
+    color: #e6daa6;
+    text-shadow: 1px 0px 1px #000, -1px 0px 1px #000, 0px -1px 1px #000, 0px 1px 1px #000;
+}
+
+.headline {
+    height: 3px;
+    background-color: #e6daa6;
+    box-shadow: 1px 0px 2px #000, -1px 0px 2px #000, 0px -1px 2px #000, 0px 1px 2px #000;
+}
+
+.emerald {
+    background-color: #50c878;
+}
