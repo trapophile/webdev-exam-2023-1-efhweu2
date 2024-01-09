@@ -21,3 +21,12 @@
 .emerald {
     background-color: #50c878;
 }
+
+#guides-table {
+    display: none;
+}
+
+.page-link {
+    cursor: pointer;
+    
+}
