@@ -19,6 +19,14 @@ var days = [
     "6-12",
     "11-4"];
 
+function showAlert() {
+    let alert = document.getElementById('alert');
+    alert.classList.remove('d-none');
+    setTimeout(() => {
+        alert.classList.add('d-none');
+    }, 2000);
+}
+
 function isThisDayOff(formDate) {
     let date = new Date(formDate);
     let weekDay = date.getDay();
@@ -88,6 +96,8 @@ async function postOrder(formData) {
 
 function showOrderModal(arr = []) {
     const orderModal = new bootstrap.Modal('#orderModal');
+    let checkFirst = 0;
+    let checkSecond = 0;
     let pricePerHour = Number(arr[4]);
     let formDuration = document.getElementById('formDuration');
     let duration = Number(formDuration.value);
@@ -127,28 +137,38 @@ function showOrderModal(arr = []) {
                 formDate.value, formTime.value, count);
         };
     });
-    const data = {
-        date: `${formDate.value}`,
-        duration: `${formDuration.value}`,
-        guide_id: `${arr[0]}`,
-        id: 2,
-        optionFirst: `${interOption.checked}`,
-        optionSecond: `${pensionOption.checked}`,
-        persons: `${formCount.value}`,
-        price: `${message.textContent}`,
-        route_id: `${arr[2]}`,
-        time: `${formTime.value}`,
-        student_id: 10700
-    };
     let order = document.getElementById('orderForm');
     order.addEventListener('submit', (event) => {
         event.preventDefault();
+        if (interOption.checked) {
+            checkFirst = 1;
+        }
+        if (pensionOption.checked) {
+            checkSecond = 1;
+        }
+        const data = {
+            date: `${formDate.value}`,
+            duration: `${formDuration.value}`,
+            guide_id: `${arr[0]}`,
+            id: 2,
+            optionFirst: `${checkFirst}`,
+            optionSecond: `${checkSecond}`,
+            persons: `${formCount.value}`,
+            price: `${message.textContent}`,
+            route_id: `${arr[2]}`,
+            time: `${formTime.value}`,
+            student_id: 10700
+        };
+        console.log(interOption.checked);
+        console.log(pensionOption.checked);
         const formData = new FormData();
         for (const key in data) {
             formData.append(key, data[key]);
         }
         postOrder(formData);
-        
+        showAlert();
+        orderModal.hide();
+        window.scrollTo(0, 0);
     });
     orderModal.show();
 }
@@ -164,7 +184,7 @@ async function createGuidesTable(routeId, routeName) {
     for (let guide of guides) {
         item += `
         <tr>
-            <td><img src="./images/person-square.svg"></td>
+            <td><i class="bi bi-person-square fs-3"><i></td>
             <th>${guide.name}</th>
             <td>${guide.language}</td>
             <td>${guide.workExperience}</td>
@@ -185,8 +205,7 @@ async function createGuidesTable(routeId, routeName) {
             let name = this.getAttribute('data-guide-name');
             let pricePerHour = this.getAttribute('data-price');
             let arr = [id, name, routeId, routeName, pricePerHour];
-            let btn = document.getElementById(id);
-            btn.parentElement.parentElement.classList.add('table-light');
+            this.parentElement.parentElement.classList.add('table-light');
             showOrderModal(arr);
         });
     });
@@ -261,8 +280,7 @@ async function createRouteTable(page = 1) {
         btn.addEventListener('click', function () {
             let routeId = this.getAttribute('id');
             let routeName = this.getAttribute('data-route-name');
-            let btn = document.getElementById(routeId);
-            btn.parentElement.parentElement.classList.add('table-light');
+            this.parentElement.parentElement.classList.add('table-light');
             createGuidesTable(routeId, routeName);
         });
     });
@@ -278,4 +296,5 @@ window.onload = function () {
     createRouteTable();
     let pagination = document.querySelector('.pagination');
     pagination.addEventListener('click', pageBtnHandler);
+    window.scrollTo(0, 0);
 };

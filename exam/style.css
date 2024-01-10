@@ -25,3 +25,7 @@
 .page-link {
     cursor: pointer;
 }
+
+#icon {
+    color: #fff;
+}
