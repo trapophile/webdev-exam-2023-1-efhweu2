@@ -3,36 +3,35 @@ const apiKey = "?api_key=a049a0ac-2113-478f-a672-b329fce6f952";
 let now = new Date();
 var tomorrowDate = now.getFullYear() + "-" + ("0" + (now.getMonth() 
 + 1)).slice(-2) + "-" + ("0" + (now.getDate() + 1)).slice(-2);
-var holidays = [
-    "01-01",
-    "01-02",
-    "01-03",
-    "01-04",
-    "01-05",
-    "01-06",
-    "01-07",
-    "01-08",
-    "02-23",
-    "03-08",
-    "05-01",
-    "05-09",
-    "06-12",
-    "11-04"];
+var days = [
+    "1-1",
+    "1-2",
+    "1-3",
+    "1-4",
+    "1-5",
+    "1-6",
+    "1-7",
+    "1-8",
+    "2-23",
+    "3-8",
+    "5-1",
+    "5-9",
+    "6-12",
+    "11-4"];
 
 function isThisDayOff(formDate) {
     let date = new Date(formDate);
-    let day = date.getDay();
-    let MonthDay = (date.getMonth() + 1) + '-' + date.getDate();
+    let weekDay = date.getDay();
+    let monthDay = (date.getMonth() + 1) + '-' + date.getDate();
     let multiply = 1;
-    if (day === 0 || day === 6 || holidays.includes(MonthDay)) {
+    if (weekDay === 0 || weekDay === 6 || days.includes(monthDay)) {
         multiply = 1.5;
     }
     return multiply;
 }
 
 function isExpensiveTime(formTime) {
-    let time = new Date(formTime);
-    let hours = time.getHours();
+    let hours = Number(formTime.slice(0, 2));
     let addCost = 0;
     if (hours >= 9 && hours < 12) {
         addCost = 400;
@@ -54,9 +53,17 @@ function countOfVisitors(people) {
 
 function totalPrice(pricePerHour, duration, date, time, count) {
     let total = pricePerHour * duration * isThisDayOff(date);
+    let pensionOption = document.getElementById('addition2');
+    let interOption = document.getElementById('addition1');
     total += isExpensiveTime(time) + countOfVisitors(count);
+    if (pensionOption.checked) {
+        total *= 0.75;
+    }
+    if (interOption.checked) {
+        total *= 1.5;
+    }
     let message = document.getElementById('totalPrice');
-    message.innerHTML = `Итоговая стоимость в рублях: ${total}`;
+    message.innerHTML = Math.round(total);
 }
 
 async function getRoutes() {
@@ -71,10 +78,21 @@ async function getGuides(id) {
     return commit;
 }
 
+async function postOrder(formData) {
+    const responce = await fetch(HOST + 'orders' + apiKey, {
+        method: "POST",
+        body: formData,
+    });
+    console.log(await responce.text());
+}
+
 function showOrderModal(arr = []) {
     const orderModal = new bootstrap.Modal('#orderModal');
     let pricePerHour = Number(arr[4]);
-    let duration = Number(document.getElementById('formDuration').value);
+    let formDuration = document.getElementById('formDuration');
+    let duration = Number(formDuration.value);
+    let pensionOption = document.getElementById('addition2');
+    let interOption = document.getElementById('addition1');
     let now = new Date();
     let day = ("0" + (now.getDate() + 1)).slice(-2);
     let month = ("0" + (now.getMonth() + 1)).slice(-2);
@@ -87,9 +105,51 @@ function showOrderModal(arr = []) {
     formGuideName.value = arr[1];
     let formTime = document.getElementById('formTime');
     formTime.value = "12:00";
-    let count = Number(document.getElementById('countOfPersons').value);
+    let formCount = document.getElementById('countOfPersons');
+    let count = Number(formCount.value);
+    let message = document.getElementById('totalPrice');
     totalPrice(pricePerHour, duration, formDate.value, formTime.value, count);
-    console.log(pricePerHour, duration, formDate.value, formTime.value, count);
+    let changeHandlers = [formTime, formDate, formDuration, formCount];
+    let cklickHandlers = [pensionOption, interOption];
+    changeHandlers.forEach(change => {
+        change.onchange = function() {
+            count = Number(formCount.value);
+            duration = Number(formDuration.value);
+            totalPrice(pricePerHour, duration, 
+                formDate.value, formTime.value, count);
+        };
+    });
+    cklickHandlers.forEach(cklick => {
+        cklick.onclick = function() {
+            count = Number(formCount.value);
+            duration = Number(formDuration.value);
+            totalPrice(pricePerHour, duration, 
+                formDate.value, formTime.value, count);
+        };
+    });
+    const data = {
+        date: `${formDate.value}`,
+        duration: `${formDuration.value}`,
+        guide_id: `${arr[0]}`,
+        id: 2,
+        optionFirst: `${interOption.checked}`,
+        optionSecond: `${pensionOption.checked}`,
+        persons: `${formCount.value}`,
+        price: `${message.textContent}`,
+        route_id: `${arr[2]}`,
+        time: `${formTime.value}`,
+        student_id: 10700
+    };
+    let order = document.getElementById('orderForm');
+    order.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData();
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
+        postOrder(formData);
+        
+    });
     orderModal.show();
 }
 
@@ -111,7 +171,7 @@ async function createGuidesTable(routeId, routeName) {
             <td>${guide.pricePerHour}</td>
             <td>
                 <button class="selectGuide" 
-                data-guide-id="${guide.id}" data-price="${guide.pricePerHour}" 
+                id="${guide.id}" data-price="${guide.pricePerHour}" 
                 data-guide-name="${guide.name}">
                     Выбрать
                 </button>
@@ -121,10 +181,12 @@ async function createGuidesTable(routeId, routeName) {
     table.innerHTML = item;
     document.querySelectorAll('.selectGuide').forEach(btn => {
         btn.addEventListener('click', function () {
-            let id = this.getAttribute('data-guide-id');
+            let id = this.getAttribute('id');
             let name = this.getAttribute('data-guide-name');
             let pricePerHour = this.getAttribute('data-price');
             let arr = [id, name, routeId, routeName, pricePerHour];
+            let btn = document.getElementById(id);
+            btn.parentElement.parentElement.classList.add('table-light');
             showOrderModal(arr);
         });
     });
@@ -188,7 +250,7 @@ async function createRouteTable(page = 1) {
             <td>${route.mainObject}</td>
             <td>
                 <button class="selectRoute" 
-                data-route-id="${route.id}" data-route-name="${route.name}">
+                id="${route.id}" data-route-name="${route.name}">
                     Выбрать
                 </button>
             </td>
@@ -197,8 +259,10 @@ async function createRouteTable(page = 1) {
     table.innerHTML = item;
     document.querySelectorAll('.selectRoute').forEach(btn => {
         btn.addEventListener('click', function () {
-            let routeId = this.getAttribute('data-route-id');
+            let routeId = this.getAttribute('id');
             let routeName = this.getAttribute('data-route-name');
+            let btn = document.getElementById(routeId);
+            btn.parentElement.parentElement.classList.add('table-light');
             createGuidesTable(routeId, routeName);
         });
     });
@@ -208,7 +272,6 @@ function pageBtnHandler(event) {
     if (event.target.dataset.page) {
         createRouteTable(event.target.dataset.page);
     }
-    window.scrollTo(0, 1400);
 }
 
 window.onload = function () {

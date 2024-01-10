@@ -8,8 +8,6 @@
 
 .cyan {
     background-color: #42aaff;
-    color: #e6daa6;
-    text-shadow: 1px 0px 1px #000, -1px 0px 1px #000, 0px -1px 1px #000, 0px 1px 1px #000;
 }
 
 .headline {
@@ -20,13 +18,10 @@
 
 .emerald {
     background-color: #50c878;
-}
-
-#guides-table {
-    display: none;
+    color: #e6daa6;
+    text-shadow: 1px 0px 1px #000, -1px 0px 1px #000, 0px -1px 1px #000, 0px 1px 1px #000;
 }
 
 .page-link {
     cursor: pointer;
-    
 }
