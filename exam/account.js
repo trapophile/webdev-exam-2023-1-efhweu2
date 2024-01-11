@@ -357,9 +357,11 @@ window.onload = function () {
     let pagination = document.querySelector('.pagination');
     pagination.addEventListener('click', pageBtnHandler);
     let delBtn = document.getElementById('delFormBtn');
-    delBtn.addEventListener('click', createOrdersTable);
+    delBtn.addEventListener('click', function() {
+        setTimeout(createOrdersTable, 500);
+    });
     let uplBtn = document.getElementById('uploadFormBtn');
-    uplBtn.addEventListener('click', async function() {
-        setTimeout(await createOrdersTable, 500);
+    uplBtn.addEventListener('click', function() {
+        setTimeout(createOrdersTable, 500);
     });
 };
