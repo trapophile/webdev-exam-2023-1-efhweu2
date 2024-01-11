@@ -14,8 +14,8 @@
         <nav class="navbar border-bottom bg-light border-black">
             <div class="container text-black ">
                 <a class="navbar-brand fs-4 fw-bold pb-0" href="#">
-                  <img src="images/kremlin.svg" alt="Кремль" width="40" height="40" class="align-middle">
-                  Посещай-ка
+                    <img src="images/kremlin.svg" alt="Кремль" width="40" height="40" class="align-middle">
+                    Посещай-ка
                 </a>
                 <a class="nav-link fs-5 text-black" href="./account.html">Личный кабинет</a>
             </div>
@@ -75,18 +75,18 @@
                     <label class="mx-2 fs-5" for="routes-select">Основной объект:</label>
                     <select class="form-select w-50" id="routes-select">
                         <option selected>Не выбрано</option>
-                      </select>
+                    </select>
                 </div>
             </div>
             <div class="container mx-0 mx-md-auto">
                 <table class="table table-dark table-striped-columns table-hover border-light">
                     <thead>
-                      <tr>
-                        <th scope="col">Название</th>
-                        <th scope="col">Описание</th>
-                        <th scope="col">Основной объект</th>
-                        <th scope="col"></th>
-                      </tr>
+                        <tr>
+                            <th scope="col">Название</th>
+                            <th scope="col">Описание</th>
+                            <th scope="col">Основной объект</th>
+                            <th scope="col"></th>
+                        </tr>
                     </thead>
                     <tbody class="routes-table">
                     </tbody>
@@ -138,68 +138,67 @@
 
         <div class="modal fade" id="orderModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">Оформление заявки</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="orderForm">
-                        <div class="col">
-                            <label for="formRouteName" class="form-label">Маршрут</label>
-                            <input type="text" class="form-control" name="formRouteName" id="formRouteName" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="formGuideName" class="form-label">Гид</label>
-                            <input type="text" class="form-control" name="formGuideName" id="formGuideName" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="formDate" class="form-label">Дата</label>
-                            <input type="date" class="form-control" name="formDate" value="2024-01-01" id="formDate" required>
-                        </div>
-                        <div class="col">
-                            <label for="formTime" class="form-label">Время</label>
-                            <input type="time" class="form-control" name="formTime" min="09:00" max="23:00" id="formTime" required>
-                        </div>
-                        <div class="col">
-                            <label for="formDuration" class="form-label">Длительность экскурсии</label>
-                            <select name="formDuration" id="formDuration" class="form-select">
-                                <option value="1" selected>1 час</option>
-                                <option value="2">2 часа</option>
-                                <option value="3">3 часа</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <label for="countOfPersons" class="form-label">Количество человек</label>
-                            <input type="number" class="form-control" name="countOfPersons" min="1" max="20" value="1" step="1" id="countOfPersons" required>
-                        </div>
-                        <div class="row p-3 pb-1">
-                            <div class="col-6 form-check">
-                                <input type="checkbox" class="form-check-input" name="addition1" id="addition1">
-                                <label class="form-check-label" for="addittion1">Интерактивный путеводитель</label>
-                                <div class="descript text-secondary">Стоимость увеличится в 1.5 раза.</div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Оформление заявки</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="orderForm">
+                            <div class="col">
+                                <label for="formRouteName" class="form-label">Маршрут</label>
+                                <input type="text" class="form-control" name="formRouteName" id="formRouteName" readonly>
                             </div>
-                            <div class="col-6 form-check">
-                                <input type="checkbox" class="form-check-input" name="addition2" id="addition2">
-                                <label class="form-check-label" for="addittion2">Скидка пенсионерам</label>
-                                <div class="descript text-secondary">Скидка 25% для пенсионеров.</div>
+                            <div class="col">
+                                <label for="formGuideName" class="form-label">Гид</label>
+                                <input type="text" class="form-control" name="formGuideName" id="formGuideName" readonly>
                             </div>
-                        </div>
-                        
-                        <div class="col mb-3">
-                            <div class="fs-5 d-inline">Итоговая стоимость в рублях:</div>
-                            <div class="fs-5 d-inline" id="totalPrice"></div>
-                        </div>
-                        <div class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Отмена</button>
-                            <button type="submit" class="btn btn-primary w-25" id="uploadFormBtn">Отправить</button>
-                        </div>
-                    </form>
+                            <div class="col">
+                                <label for="formDate" class="form-label">Дата</label>
+                                <input type="date" class="form-control" name="formDate" value="2024-01-01" id="formDate" required>
+                            </div>
+                            <div class="col">
+                                <label for="formTime" class="form-label">Время</label>
+                                <input type="time" class="form-control" name="formTime" min="09:00" max="23:00" id="formTime" required>
+                            </div>
+                            <div class="col">
+                                <label for="formDuration" class="form-label">Длительность экскурсии</label>
+                                <select name="formDuration" id="formDuration" class="form-select">
+                                    <option value="1" selected>1 час</option>
+                                    <option value="2">2 часа</option>
+                                    <option value="3">3 часа</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="countOfPersons" class="form-label">Количество человек</label>
+                                <input type="number" class="form-control" name="countOfPersons" min="1" max="20" value="1" step="1" id="countOfPersons" required>
+                            </div>
+                            <div class="row p-3 pb-1">
+                                <div class="col-6 form-check">
+                                    <input type="checkbox" class="form-check-input" name="addition1" id="addition1">
+                                    <label class="form-check-label" for="addittion1">Интерактивный путеводитель</label>
+                                    <div class="descript text-secondary">Стоимость увеличится в 1.5 раза.</div>
+                                </div>
+                                <div class="col-6 form-check">
+                                    <input type="checkbox" class="form-check-input" name="addition2" id="addition2">
+                                    <label class="form-check-label" for="addittion2">Скидка пенсионерам</label>
+                                    <div class="descript text-secondary">Скидка 25% для пенсионеров.</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col mb-3">
+                                <div class="fs-5 d-inline">Итоговая стоимость в рублях:</div>
+                                <div class="fs-5 d-inline" id="totalPrice"></div>
+                            </div>
+                            <div class="d-flex justify-content-evenly">
+                                <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Отмена</button>
+                                <button type="submit" class="btn btn-primary w-25" id="uploadFormBtn">Отправить</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
     </main>
 
     <footer>
