@@ -8,8 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Document</title>
 </head>
-<body>
-
+<body class="biege">
     <header class="sticky-top">
         <nav class="navbar border-bottom bg-light border-black">
             <div class="container text-black ">
@@ -23,7 +22,7 @@
     </header>
     
     <main>
-        <section class="container-fluid py-4 biege">
+        <section class="container-fluid vh-100 py-4">
             <div class="container p-2 mb-3 rounded d-none bg-primary text-center border-light text-black fs-4" id="alert">
                 <div class="d-inline">Заявка успешно</div>
                 <div class="d-inline" id="alertMessage"></div>
@@ -123,7 +122,7 @@
                 <div class="h5 pb-3">Вы действительно хотите удалить заявку?</div>
                 <div class="d-flex justify-content-evenly" id="buttonsDel">
                     <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Отмена</button>
-                    <button type="игеещт" class="btn btn-danger w-25" id="delFormBtn">Удалить</button>
+                    <button type="button" class="btn btn-danger w-25" id="delFormBtn">Удалить</button>
                 </div>
             </div>
           </div>
@@ -131,7 +130,7 @@
       </div>
     </main>
 
-    <footer>
+    <footer class="sticky-bottom">
         <div class="bg-light text-dark text-center py-2">
             Copyright &#169; Посещай-ка, 2023
         </div>

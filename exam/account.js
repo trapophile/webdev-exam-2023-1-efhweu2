@@ -152,11 +152,11 @@ function createPaginationElems(total, page) {
     paginationContainer.append(btn);
 }
 
-async function editOrderModal(id) {
+async function showOrderModal(id) {
     const orderModal = new bootstrap.Modal('#orderModal');
     const commit = await getOrderById(id);
-    let checkFirst = 0;
-    let checkSecond = 0;
+    let buttons = document.getElementById('buttons');
+    buttons.classList.add('d-none');
     let formDuration = document.getElementById('formDuration');
     let pensionOption = document.getElementById('addition2');
     let interOption = document.getElementById('addition1');
@@ -182,7 +182,55 @@ async function editOrderModal(id) {
     if (commit.optionSecond) {
         pensionOption.checked = true;
     }
-    console.log(commit);
+    formTime.setAttribute('disabled', 'true');
+    formDate.setAttribute('disabled', 'true');
+    formCount.setAttribute('disabled', 'true');
+    pensionOption.setAttribute('disabled', 'true');
+    interOption.setAttribute('disabled', 'true');
+    formDuration.setAttribute('disabled', 'true');
+    totalPrice(pricePerHour, formDuration.value, 
+        formDate.value, formTime.value, formCount.value);
+    orderModal.show();
+}
+
+async function editOrderModal(id) {
+    const orderModal = new bootstrap.Modal('#orderModal');
+    const commit = await getOrderById(id);
+    let checkFirst = 0;
+    let checkSecond = 0;
+    let buttons = document.getElementById('buttons');
+    buttons.classList.remove('d-none');
+    let formDuration = document.getElementById('formDuration');
+    let pensionOption = document.getElementById('addition2');
+    let interOption = document.getElementById('addition1');
+    let formDate = document.getElementById('formDate');
+    let formRouteName = document.getElementById('formRouteName');
+    let formGuideName = document.getElementById('formGuideName');
+    let formTime = document.getElementById('formTime');
+    let formCount = document.getElementById('countOfPersons');
+    let message = document.getElementById('totalPrice');
+    const route = await getRoutes(commit.route_id);
+    const guide = await getGuides(commit.guide_id);
+    formDuration.value = commit.duration;
+    formGuideName.value = guide.name;
+    formDate.value = commit.date;
+    formRouteName.value = route.name;
+    formTime.value = commit.time;
+    message.innerHTML = commit.price;
+    formCount.value = commit.persons;
+    let pricePerHour = guide.pricePerHour;
+    if (commit.optionFirst) {
+        interOption.checked = true;
+    }
+    if (commit.optionSecond) {
+        pensionOption.checked = true;
+    }
+    formTime.removeAttribute('disabled');
+    formDate.removeAttribute('disabled');
+    formCount.removeAttribute('disabled');
+    pensionOption.removeAttribute('disabled');
+    interOption.removeAttribute('disabled');
+    formDuration.removeAttribute('disabled');
     totalPrice(pricePerHour, formDuration.value, 
         formDate.value, formTime.value, formCount.value);
     let changeHandlers = [formTime, formDate, formDuration, formCount];
@@ -200,7 +248,7 @@ async function editOrderModal(id) {
         };
     });
     let order = document.getElementById('orderForm');
-    order.addEventListener('submit', (event) => {
+    order.addEventListener('submit', async (event) => {
         event.preventDefault();
         if (interOption.checked) {
             checkFirst = 1;
@@ -223,7 +271,7 @@ async function editOrderModal(id) {
         for (const key in data) {
             formData.append(key, data[key]);
         }
-        putOrder(id, formData);
+        await putOrder(id, formData);
         orderModal.hide();
         showAlert('редактирование');  
         window.scrollTo(0, 0);
@@ -241,8 +289,8 @@ async function deleteOrder(id) {
 async function deleteOrderModal(id) {
     let orderModal = new bootstrap.Modal('#deleteModal');
     let btn = document.getElementById('delFormBtn');
-    btn.addEventListener('click', () => {
-        deleteOrder(id);
+    btn.addEventListener('click', async () => {
+        await deleteOrder(id);
         showAlert('удаление');
         orderModal.hide();
     });
@@ -279,15 +327,21 @@ async function createOrdersTable(page = 1) {
     }
     table.innerHTML = item;
     document.querySelectorAll('.bi-pencil-square').forEach(btn => {
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', async function () {
             let id = this.getAttribute('data-id');
-            editOrderModal(id);
+            await editOrderModal(id);
         });
     });
     document.querySelectorAll('.bi-trash3').forEach(btn => {
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', async function () {
             let id = this.getAttribute('data-id');
-            deleteOrderModal(id);
+            await deleteOrderModal(id);
+        });
+    });
+    document.querySelectorAll('.bi-eye').forEach(btn => {
+        btn.addEventListener('click', async function () {
+            let id = this.getAttribute('data-id');
+            await showOrderModal(id);
         });
     });
 }
@@ -305,5 +359,7 @@ window.onload = function () {
     let delBtn = document.getElementById('delFormBtn');
     delBtn.addEventListener('click', createOrdersTable);
     let uplBtn = document.getElementById('uploadFormBtn');
-    uplBtn.addEventListener('click', createOrdersTable);
+    uplBtn.addEventListener('click', async function() {
+        setTimeout(await createOrdersTable, 500);
+    });
 };
