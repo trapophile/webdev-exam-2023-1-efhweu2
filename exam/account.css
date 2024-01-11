@@ -1,3 +1,7 @@
+html, body, main {
+    height: 100%;
+}
+
 .biege {
     background-color: #e6daa6;
 }
@@ -8,12 +12,6 @@
 
 .cyan {
     background-color: #42aaff;
-}
-
-.headline {
-    height: 3px;
-    background-color: #e6daa6;
-    box-shadow: 1px 0px 2px #000, -1px 0px 2px #000, 0px -1px 2px #000, 0px 1px 2px #000;
 }
 
 .emerald {
