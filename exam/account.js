@@ -126,30 +126,14 @@ function createPageBtn(page, classes = [], text) {
 
 function createPaginationElems(total, page) {
     let btn;
-    let text = 'Первая страница';
     const paginationContainer = document.querySelector('.pagination');
     paginationContainer.innerHTML = '';
-    if (page == 1) {
-        btn = createPageBtn(1, ['disabled'], text);
-        btn.style.visibility = 'hidden';
-    } else {
-        btn = createPageBtn(1, [], text);
-    }
-    paginationContainer.append(btn);
     const start = Math.max(page - 2, 1);
     const end = Math.min(Number(page) + 2, total);
     for (let i = start; i <= end; i++) {
         btn = createPageBtn(i, i == page ? ['active'] : [], i);
         paginationContainer.append(btn);
     }
-    text = 'Последняя страница';
-    if (page == total) {
-        btn = createPageBtn(total, ['disabled'], text);
-        btn.style.visibility = 'hidden';
-    } else {
-        btn = createPageBtn(total, [], text);
-    }
-    paginationContainer.append(btn);
 }
 
 async function showOrderModal(id) {
